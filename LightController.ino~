@@ -1,7 +1,65 @@
 /*
- * Name:	LightController.ino
+ * Name:	LightScheduler.ino
  * Author:	User "benjaf" at plantedtank.net forums
- * URL:		https://github.com/benjaf/LightController
+ * URL:		http://codebender.cc/sketch:4232
+ *
+ * This is an 'advanced' 24 hour light scheduler.
+ * It allows for easy creation of pretty much any 24 hour light schedule imaginable within the limitations of the Arduino used.
+ * Limitations:
+ * - Schedule cannot exceed 24 hours (no handling of differences based on weekday, time of year etc.)
+ * - Max number of channels: Defined by the number of PWN pins available on the Arduino used
+ * - Max number of on/off cycles during a day: Any
+ * - Precision: 
+ *   - PWN duty cycle: 0-255
+ *   - Time-to-PWM precision: 1 second (making the shortest fade timespan in which full PWM resolution is used 255 seconds)
+ *
+ * This is not intended to be a complete aquarium or light controller. 
+ * It merely provides you with the code to handle light scheduling! 
+ *
+ * You will need to download and install "RTClib" for this to work.
+ *
+ * I have NOT included any code for interfaces (Serial, LCD, etc.), nor any delays.
+ * That would make the sketch more context-specific because it depends on the users actual setup.
+ * Communication via Serial is easy to find documentation on elsewhere.
+ * It should be noted that this code contains no delays! If you start sending data (i.e. via Serial)
+ * you might want to make sure this is only done at apropriate intervals.
+ *
+ * This version uses 2 PWM pins because I only have 2 channels in my setup.
+ * More channels are easy to add, but some basic understanding of arrays is recommended.
+ * Fore more advanced changes, the user (you) should have basic understanding of programming.
+ * This includes: 
+ * - For-loops (and break conditions)
+ * - Multi-dimensional arrays
+ *
+ * As is probably evident from the code, I am not that experianced with writing software for microcontrollers.
+ * Several optimizations are possible, but I tried to shoot for at least some degree of readability.
+ */
+ 
+/*
+ * Copyright (c) 2013, User "benjaf" at plantedtank.net forums
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.  
  */
 
 #include <Wire.h>
