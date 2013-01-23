@@ -1,0 +1,22 @@
+------- Communication protocol --------
+
+----------------- API ----------------- 
+---------------------------------------
+
+-- Get: --
+get all
+get l[Channel]
+
+-- Set: --
+set l[Channel]-[Row] [H_start]-[M_start]-[H_end]-[M_end]-[Intensity] (set l1-2 8-30-12-0-255)
+
+-- Clear: --
+clear l[Channel] (Sets Row 1 to 0-0-24-0-0)
+
+------------- Error Codes ------------- 
+---------------------------------------
+
+101: Invalid Time
+102: Invalid Intensity
+103: Channel does not exist
+104: Row does not exist 
