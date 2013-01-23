@@ -62,20 +62,20 @@ int Hours, Minutes, Seconds;
 
 int lightMatrix[CHANNELS][MAXPERIODS][5] = 
 {
-	{
-		{0, 0, 8, 0, 0},
-		{8, 30, 11, 0, 255},
-		{11, 10, 13, 0, 0},
-		{13, 10, 20, 0, 255},
-		{20, 30, 24, 0, 0}
-	},{
-		{0, 0, 7, 45, 0},
-		{8, 0, 11, 0, 255},
-		{11, 10, 13, 0, 0},
-		{13, 10, 20, 30, 255},
-		{20, 45, 24, 0, 0}
-	}
-	// ... and so on
+  {
+    {0, 0, 8, 0, 0},
+    {8, 30, 11, 0, 255},
+    {11, 10, 13, 0, 0},
+    {13, 10, 20, 0, 255},
+    {20, 30, 24, 0, 0}
+  },{
+    {0, 0, 7, 45, 0},
+    {8, 0, 11, 0, 255},
+    {11, 10, 13, 0, 0},
+    {13, 10, 20, 30, 255},
+    {20, 45, 24, 0, 0}
+  }
+  // ... and so on
 };
 
 // Current light intensity table
@@ -85,61 +85,63 @@ int lightValue[CHANNELS] = {0, 0};
 // ----------------------- Functions ----------------------- 
 void UpdateLights(long seconds)		// Update light intensity values
 {
-	for(int channel = 0; channel < CHANNELS; channel++) {  		// For each Channel
-		for(int period = 0; period < MAXPERIODS; period++) {    // For each possible period
-			long pEnd = GetSeconds(lightMatrix[channel][period][END_H], lightMatrix[channel][period][END_M], 0);	// Get period end time in seconds
-			if(pEnd >= seconds) {				// Period is currently happening
-				lightValue[channel] = lightMatrix[channel][period][INTENSITY];	// Set light to defined value
-				break;		// Found correct period, don't check the rest
-			} else {		// Period has not yet happened
-				long pNextStart = GetSeconds(lightMatrix[channel][period+1][START_H], lightMatrix[channel][period+1][START_M], 0); // Get next period start time in seconds
-				if(pNextStart > seconds) {					// Currently in between periods
-					int preVal = lightMatrix[channel][period][INTENSITY];		// Old light value
-					int postVal = lightMatrix[channel][period+1][INTENSITY];	// New light value
-					int tDur = pNextStart - pEnd; 			// Transition duration
-					int intensityDiff = postVal - preVal;	// Difference in light intesity between periods
-					if(intensityDiff > 0) {		// Intensity increasing
-						lightValue[channel] = (int)((seconds - pEnd) * ((float)intensityDiff / tDur));		// Light value
-					} else {					// Intensity decreasing
-						lightValue[channel] = preVal - (int)((seconds - pEnd) * ((float)(0-intensityDiff) / tDur));	// Light value
-					}
-					break;	// Found correct period, don't check the rest
-				}
-			}
-		}
-	}
+  for(int channel = 0; channel < CHANNELS; channel++) {  		// For each Channel
+    for(int period = 0; period < MAXPERIODS; period++) {    // For each possible period
+      long pEnd = GetSeconds(lightMatrix[channel][period][END_H], lightMatrix[channel][period][END_M], 0);	// Get period end time in seconds
+      if(pEnd >= seconds) {				// Period is currently happening
+        lightValue[channel] = lightMatrix[channel][period][INTENSITY];	// Set light to defined value
+        break;		// Found correct period, don't check the rest
+      } else {		// Period has not yet happened
+        long pNextStart = GetSeconds(lightMatrix[channel][period+1][START_H], lightMatrix[channel][period+1][START_M], 0); // Get next period start time in seconds
+        if(pNextStart > seconds) {					// Currently in between periods
+          int preVal = lightMatrix[channel][period][INTENSITY];		// Old light value
+          int postVal = lightMatrix[channel][period+1][INTENSITY];	// New light value
+          int tDur = pNextStart - pEnd; 			// Transition duration
+          int intensityDiff = postVal - preVal;	// Difference in light intesity between periods
+          if(intensityDiff > 0) {		// Intensity increasing
+            lightValue[channel] = (int)((seconds - pEnd) * ((float)intensityDiff / tDur));		// Light value
+          } else {					// Intensity decreasing
+            lightValue[channel] = preVal - (int)((seconds - pEnd) * ((float)(0-intensityDiff) / tDur));	// Light value
+          }
+          break;	// Found correct period, don't check the rest
+        }
+      }
+    }
+  }
 }
 
 long GetSeconds(int hours, int minutes, int seconds)	// Convert HH:mm:ss -> Seconds since midnight
 {
-	return ((long)hours * 60 * 60) + (minutes * 60) + seconds ;
+  return ((long)hours * 60 * 60) + (minutes * 60) + seconds ;
 }
 
 // ----------------------- Setup ----------------------- 
 void setup()
 {
-	// Set analog pins
-	pinMode(L1Pin, OUTPUT);
-	pinMode(L2Pin, OUTPUT);
-	// ... and so on
+  // Set analog pins
+  pinMode(L1Pin, OUTPUT);
+  pinMode(L2Pin, OUTPUT);
+  // ... and so on
 
-	// Clock
-	Wire.begin();
-	RTC.begin();
-	//RTC.adjust(DateTime(__DATE__, __TIME__));  // Set RTC time, only use for 1 (ONE) run. Will reset time at each device reset!
+  // Clock
+  Wire.begin();
+  RTC.begin();
+  //RTC.adjust(DateTime(__DATE__, __TIME__));  // Set RTC time, only use for 1 (ONE) run. Will reset time at each device reset!
+
+  Serial.begin(11500);
 }
 
 // ----------------------- Loop ----------------------- 
 void loop(){
-	// Get Time
-	DateTime now = RTC.now();
-	Hours = now.hour();
-	Minutes = now.minute();
-	Seconds = now.second();
+  // Get Time
+  DateTime now = RTC.now();
+  Hours = now.hour();
+  Minutes = now.minute();
+  Seconds = now.second();
   
-	// Update actual light intensity to match values defined in lightValue[]
-	UpdateLights(GetSeconds(Hours, Minutes, Seconds));
-	analogWrite(L1Pin, lightValue[0]);
-	analogWrite(L2Pin, lightValue[1]);
-	// ... and so on
+  // Update actual light intensity to match values defined in lightValue[]
+  UpdateLights(GetSeconds(Hours, Minutes, Seconds));
+  analogWrite(L1Pin, lightValue[0]);
+  analogWrite(L2Pin, lightValue[1]);
+  // ... and so on
 }
