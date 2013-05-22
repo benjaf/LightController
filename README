@@ -6,10 +6,10 @@ This was done to provide easy support for  moonlight, sunrise/sunset, siesta etc
 
 Limitations:
 - Schedule cannot exceed 24 hours (no handling of differences based on weekday, time of year etc.)
-- Max number of channels: Defined by the number of PWN pins available on the Arduino used
+- Max number of channels: Defined by the number of PWM pins available on the Arduino used
 - Max number of on/off cycles during a day: Any
 - Precision: 
-  - PWN duty cycle: 0-255
+  - PWM duty cycle: 0-255
   - Time-to-PWM precision: 1 second (making the shortest fade timespan in which full PWM resolution is used 255 seconds)
 
 This is not intended to be a complete aquarium or light controller,
