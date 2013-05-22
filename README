@@ -3,6 +3,7 @@ This is an 'advanced' 24 hour light scheduler designed for DIY Aquarium lighting
 It allows for easy creation of pretty much any 24 hour light schedule imaginable within the limitations of the Arduino used.
 This was done to provide easy support for  moonlight, sunrise/sunset, siesta etc.
 
+
 Limitations:
 - Schedule cannot exceed 24 hours (no handling of differences based on weekday, time of year etc.)
 - Max number of channels: Defined by the number of PWN pins available on the Arduino used
@@ -23,11 +24,11 @@ It should be noted that this code contains no delays! If you start sending data 
 you might want to make sure this is only done at apropriate intervals.
 
 This version uses 2 PWM pins because I only have 2 channels in my setup.
-More channels are easy to add, but some basic understanding of arrays is recommended.
 Fore more advanced changes, the user (you) should have basic understanding of programming.
 This includes: 
 - For-loops (and break conditions)
-- Multi-dimensional arrays
+- Objects
 
 As is probably evident from the code, I am not that experienced with writing software for microcontrollers.
+I have written this code from an Object Oriented point of view to make it more aesily understandable.
 Several optimizations are possible, but I tried to shoot for at least some degree of readability.
