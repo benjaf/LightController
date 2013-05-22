@@ -23,11 +23,11 @@ It should be noted that this code contains no delays! If you start sending data 
 you might want to make sure this is only done at apropriate intervals.
 
 This version uses 2 PWM pins because I only have 2 channels in my setup.
-More channels are easy to add, but some basic understanding of arrays is recommended.
 Fore more advanced changes, the user (you) should have basic understanding of programming.
 This includes: 
 - For-loops (and break conditions)
-- Multi-dimensional arrays
+- Objects
 
 As is probably evident from the code, I am not that experienced with writing software for microcontrollers.
+I have written this code from an Object Oriented point of view to make it more aesily understandable.
 Several optimizations are possible, but I tried to shoot for at least some degree of readability.
