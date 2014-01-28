@@ -12,7 +12,7 @@ Point::Point()
 Point::Point(byte h, byte m, float intensity)
 {
 	_minutes = (60 * (int)h) + m;
-	if(intensity > 0) 
+	if(intensity > 1) 
 	{
 		_intensity = intensity / (float)255;
 	}
