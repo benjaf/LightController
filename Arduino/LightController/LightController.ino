@@ -3,7 +3,7 @@
  * Author:	User "benjaf" at plantedtank.net forums
  * URL:		https://github.com/benjaf/LightController
  * This example is set up for 2 channels with a maximum of 10 points.
- * Anything that may require editing is labeled with ¤CHANGE¤
+ * Anything that may require editing is labeled with ï¿½CHANGEï¿½
  
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -22,7 +22,7 @@ THE SOFTWARE.
 #include "ChannelManager.h"
 
 // ----------------------- Constants -----------------------
-// ¤CHANGE¤
+// ï¿½CHANGEï¿½
 const int MaxChannels = 2;   // Max number of channels, change if more or less are required
 const int MaxPoints = 10;    // Max number of light intensity points, change if more or less are required
 
@@ -63,7 +63,7 @@ Channel Channels[MaxChannels];
 Point Points[MaxChannels][MaxPoints];
 
 // Add more timing definitions here if more channels are added:
-// ¤CHANGE¤
+// ï¿½CHANGEï¿½
 void InitializeChannels(int channels) {
 	// Channel 0: (Example)
 	// This is an example of a typical lighting schedule (Lights on 08:30 - 19:00 w. 30 minutes of sunrise / sunset added)
@@ -142,3 +142,5 @@ void loop() {
 	// Update lights
 	UpdateLights(CurrentTime);
 }
+
+// make one update for training use github public projects sorry.
